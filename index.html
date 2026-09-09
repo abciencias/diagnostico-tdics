@@ -1,12 +1,381 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diagnóstico TDICs</title>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="description"
+    content="Instrumento diagnóstico sobre a integração pedagógica e crítica das TDICs."
+  />
+
+  <title>Diagnóstico do Uso das TDICs</title>
+
+  <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
-  <h1>Diagnóstico do Uso das TDICs</h1>
-  <p>Protótipo em construção.</p>
+
+  <main class="app">
+
+    <!-- TELA INICIAL -->
+    <section id="tela-inicial" class="tela ativa">
+
+      <div class="card card-inicial">
+
+        <div class="marca">
+          <span class="marca-icone">TDIC</span>
+        </div>
+
+        <p class="rotulo">Instrumento diagnóstico</p>
+
+        <h1>
+          Como você utiliza as TDICs em sua prática pedagógica?
+        </h1>
+
+        <p class="subtitulo">
+          Este instrumento apresenta situações relacionadas ao uso das
+          Tecnologias Digitais da Informação e Comunicação no contexto
+          educacional.
+        </p>
+
+        <p class="texto-intro">
+          Você responderá a 28 situações. Em cada uma delas, escolha a
+          alternativa que mais se aproxima daquilo que você faria ou costuma
+          fazer em sua prática.
+        </p>
+
+        <div class="aviso">
+          <strong>Importante:</strong>
+          não existem respostas certas ou erradas. O objetivo é identificar
+          características predominantes da sua prática com TDICs.
+        </div>
+
+        <div class="info-rapida">
+
+          <div class="info-item">
+            <span class="info-numero">28</span>
+            <span class="info-texto">situações</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-numero">4</span>
+            <span class="info-texto">alternativas</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-numero">≈ 10</span>
+            <span class="info-texto">minutos</span>
+          </div>
+
+        </div>
+
+        <button id="btn-iniciar" class="btn btn-principal">
+          Iniciar diagnóstico
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- TELA DO QUIZ -->
+    <section id="tela-quiz" class="tela">
+
+      <div class="quiz-container">
+
+        <div class="quiz-topo">
+
+          <div class="progresso-texto">
+            <span>
+              Situação
+              <strong id="numero-atual">1</strong>
+              de
+              <strong id="total-perguntas">28</strong>
+            </span>
+
+            <span id="percentual-progresso">
+              0%
+            </span>
+          </div>
+
+          <div class="barra-progresso">
+            <div
+              id="barra-progresso-preenchimento"
+              class="barra-progresso-preenchimento"
+            ></div>
+          </div>
+
+        </div>
+
+
+        <article class="card card-pergunta">
+
+          <p id="tipo-pergunta" class="tipo-pergunta">
+            Situação
+          </p>
+
+          <h2 id="texto-pergunta">
+            Carregando pergunta...
+          </h2>
+
+          <div
+            id="alternativas"
+            class="alternativas"
+          ></div>
+
+        </article>
+
+
+        <div class="navegacao">
+
+          <button
+            id="btn-voltar"
+            class="btn btn-secundario"
+            type="button"
+          >
+            Voltar
+          </button>
+
+          <button
+            id="btn-avancar"
+            class="btn btn-principal"
+            type="button"
+            disabled
+          >
+            Próxima
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TELA DE PROCESSAMENTO -->
+    <section id="tela-processando" class="tela">
+
+      <div class="card card-processando">
+
+        <div class="loader"></div>
+
+        <h2>
+          Analisando suas respostas...
+        </h2>
+
+        <p>
+          Estamos organizando seu perfil de utilização das TDICs.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- TELA DE RESULTADO -->
+    <section id="tela-resultado" class="tela">
+
+      <div class="resultado-container">
+
+        <header class="resultado-topo">
+
+          <p class="rotulo">
+            Seu diagnóstico
+          </p>
+
+          <h1 id="resultado-perfil">
+            Perfil
+          </h1>
+
+          <p
+            id="resultado-tendencia"
+            class="resultado-tendencia"
+          ></p>
+
+        </header>
+
+
+        <!-- ÍNDICES -->
+        <section class="card">
+
+          <h2>
+            Seus dois grandes eixos
+          </h2>
+
+          <div class="indice">
+
+            <div class="indice-cabecalho">
+              <span>
+                Integração pedagógica
+              </span>
+
+              <strong id="valor-ip">
+                0%
+              </strong>
+            </div>
+
+            <div class="barra-resultado">
+              <div
+                id="barra-ip"
+                class="barra-resultado-preenchimento"
+              ></div>
+            </div>
+
+            <span
+              id="nivel-ip"
+              class="nivel"
+            ></span>
+
+          </div>
+
+
+          <div class="indice">
+
+            <div class="indice-cabecalho">
+              <span>
+                Criticidade
+              </span>
+
+              <strong id="valor-ic">
+                0%
+              </strong>
+            </div>
+
+            <div class="barra-resultado">
+              <div
+                id="barra-ic"
+                class="barra-resultado-preenchimento"
+              ></div>
+            </div>
+
+            <span
+              id="nivel-ic"
+              class="nivel"
+            ></span>
+
+          </div>
+
+        </section>
+
+
+        <!-- SETE DIMENSÕES -->
+        <section class="card">
+
+          <h2>
+            Seu mapa de dimensões
+          </h2>
+
+          <p class="texto-apoio">
+            O diagnóstico considera sete dimensões relacionadas à utilização
+            pedagógica e crítica das TDICs.
+          </p>
+
+          <div id="lista-dimensoes"></div>
+
+        </section>
+
+
+        <!-- PRINCIPAL DESTAQUE -->
+        <section
+          id="bloco-destaque"
+          class="card card-destaque"
+        >
+
+          <p class="rotulo">
+            Seu principal destaque
+          </p>
+
+          <h2 id="titulo-destaque"></h2>
+
+          <p
+            id="texto-destaque"
+            class="texto-destaque"
+          ></p>
+
+          <div
+            id="reflexao-destaque"
+            class="reflexao"
+          ></div>
+
+        </section>
+
+
+        <!-- POSSIBILIDADE DE AMPLIAÇÃO -->
+        <section
+          id="bloco-ampliacao"
+          class="card card-ampliacao"
+        >
+
+          <p class="rotulo">
+            Uma possibilidade de ampliação
+          </p>
+
+          <h2 id="titulo-ampliacao"></h2>
+
+          <p id="texto-ampliacao"></p>
+
+        </section>
+
+
+        <section class="card metodologia">
+
+          <details>
+
+            <summary>
+              Como meu resultado foi construído?
+            </summary>
+
+            <div class="details-conteudo">
+
+              <p>
+                O diagnóstico considera sete dimensões:
+                intencionalidade pedagógica, letramento digital e
+                informacional, alfabetização científica, pensamento crítico,
+                relações CTS e questões sociocientíficas, formação cidadã e
+                tomada de decisão e criticidade tecnológica.
+              </p>
+
+              <p>
+                Os resultados representam tendências identificadas nas
+                respostas e não devem ser compreendidos como avaliações
+                definitivas da prática docente.
+              </p>
+
+            </div>
+
+          </details>
+
+        </section>
+
+
+        <div class="acoes-finais">
+
+          <button
+            id="btn-refazer"
+            class="btn btn-principal"
+            type="button"
+          >
+            Refazer diagnóstico
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- SCRIPTS -->
+  <script src="js/perguntas.js"></script>
+  <script src="js/diagnostico.js"></script>
+  <script src="js/app.js"></script>
+
 </body>
 </html>
