@@ -14,41 +14,85 @@ let dadosParticipante = {
   consentimento: false
 };
 
-const telaInicial = document.getElementById("tela-inicial");
-const telaCaracterizacao = document.getElementById("tela-caracterizacao");
-const telaQuiz = document.getElementById("tela-quiz");
-const telaProcessando = document.getElementById("tela-processando");
-const telaResultado = document.getElementById("tela-resultado");
+const telaInicial =
+  document.getElementById("tela-inicial");
 
-const btnIniciar = document.getElementById("btn-iniciar");
-const btnVoltarInicio = document.getElementById("btn-voltar-inicio");
-const btnContinuar = document.getElementById("btn-continuar");
-const btnVoltar = document.getElementById("btn-voltar");
-const btnAvancar = document.getElementById("btn-avancar");
-const btnRefazer = document.getElementById("btn-refazer");
+const telaCaracterizacao =
+  document.getElementById("tela-caracterizacao");
 
-const areaAtuacao = document.getElementById("area-atuacao");
-const tempoDocencia = document.getElementById("tempo-docencia");
-const frequenciaTDIC = document.getElementById("frequencia-tdic");
-const consentimento = document.getElementById("consentimento");
+const telaQuiz =
+  document.getElementById("tela-quiz");
 
-const numeroAtual = document.getElementById("numero-atual");
-const totalPerguntas = document.getElementById("total-perguntas");
-const percentualProgresso = document.getElementById("percentual-progresso");
-const barraProgresso = document.getElementById(
-  "barra-progresso-preenchimento"
-);
+const telaProcessando =
+  document.getElementById("tela-processando");
 
-const tipoPergunta = document.getElementById("tipo-pergunta");
-const textoPergunta = document.getElementById("texto-pergunta");
-const alternativasContainer = document.getElementById("alternativas");
+const telaResultado =
+  document.getElementById("tela-resultado");
+
+const btnIniciar =
+  document.getElementById("btn-iniciar");
+
+const btnVoltarInicio =
+  document.getElementById("btn-voltar-inicio");
+
+const btnContinuar =
+  document.getElementById("btn-continuar");
+
+const btnVoltar =
+  document.getElementById("btn-voltar");
+
+const btnAvancar =
+  document.getElementById("btn-avancar");
+
+const btnRefazer =
+  document.getElementById("btn-refazer");
+
+const areaAtuacao =
+  document.getElementById("area-atuacao");
+
+const tempoDocencia =
+  document.getElementById("tempo-docencia");
+
+const frequenciaTDIC =
+  document.getElementById("frequencia-tdic");
+
+const consentimento =
+  document.getElementById("consentimento");
+
+const numeroAtual =
+  document.getElementById("numero-atual");
+
+const totalPerguntas =
+  document.getElementById("total-perguntas");
+
+const percentualProgresso =
+  document.getElementById("percentual-progresso");
+
+const barraProgresso =
+  document.getElementById(
+    "barra-progresso-preenchimento"
+  );
+
+const tipoPergunta =
+  document.getElementById("tipo-pergunta");
+
+const textoPergunta =
+  document.getElementById("texto-pergunta");
+
+const alternativasContainer =
+  document.getElementById("alternativas");
 
 totalPerguntas.textContent = perguntas.length;
 
+
+/* TELAS */
+
 function mostrarTela(tela) {
-  document.querySelectorAll(".tela").forEach((item) => {
-    item.classList.remove("ativa");
-  });
+  document
+    .querySelectorAll(".tela")
+    .forEach((item) => {
+      item.classList.remove("ativa");
+    });
 
   tela.classList.add("ativa");
 
@@ -58,15 +102,23 @@ function mostrarTela(tela) {
   });
 }
 
+
+/* CARACTERIZAÇÃO */
+
 function obterSelecionados(nome) {
   return Array.from(
-    document.querySelectorAll(`input[name="${nome}"]:checked`)
+    document.querySelectorAll(
+      `input[name="${nome}"]:checked`
+    )
   ).map((item) => item.value);
 }
 
 function validarCaracterizacao() {
-  const disciplinas = obterSelecionados("disciplina");
-  const etapas = obterSelecionados("etapa");
+  const disciplinas =
+    obterSelecionados("disciplina");
+
+  const etapas =
+    obterSelecionados("etapa");
 
   const valido =
     areaAtuacao.value !== "" &&
@@ -84,11 +136,16 @@ function validarCaracterizacao() {
 function salvarCaracterizacao() {
   dadosParticipante = {
     area: areaAtuacao.value,
-    disciplinas: obterSelecionados("disciplina"),
-    etapas: obterSelecionados("etapa"),
-    tempoDocencia: tempoDocencia.value,
-    frequenciaTDIC: frequenciaTDIC.value,
-    consentimento: consentimento.checked
+    disciplinas:
+      obterSelecionados("disciplina"),
+    etapas:
+      obterSelecionados("etapa"),
+    tempoDocencia:
+      tempoDocencia.value,
+    frequenciaTDIC:
+      frequenciaTDIC.value,
+    consentimento:
+      consentimento.checked
   };
 }
 
@@ -98,7 +155,10 @@ function salvarCaracterizacao() {
   frequenciaTDIC,
   consentimento
 ].forEach((elemento) => {
-  elemento.addEventListener("change", validarCaracterizacao);
+  elemento.addEventListener(
+    "change",
+    validarCaracterizacao
+  );
 });
 
 document
@@ -106,363 +166,731 @@ document
     'input[name="disciplina"], input[name="etapa"]'
   )
   .forEach((elemento) => {
-    elemento.addEventListener("change", validarCaracterizacao);
+    elemento.addEventListener(
+      "change",
+      validarCaracterizacao
+    );
   });
+
+
+/* EMBARALHAMENTO */
 
 function embaralharArray(array) {
   const copia = [...array];
 
-  for (let i = copia.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copia[i], copia[j]] = [copia[j], copia[i]];
+  for (
+    let i = copia.length - 1;
+    i > 0;
+    i--
+  ) {
+    const j =
+      Math.floor(Math.random() * (i + 1));
+
+    [copia[i], copia[j]] =
+      [copia[j], copia[i]];
   }
 
   return copia;
 }
 
 function prepararAplicacao() {
-  perguntasAplicacao = embaralharArray(
-    perguntas.map((pergunta, indiceOriginal) => ({
-      ...pergunta,
-      indiceOriginal
-    }))
-  );
-
-  respostas = new Array(perguntas.length).fill(null);
-
-  perguntasAplicacao.forEach((perguntaAplicacao) => {
-    perguntaAplicacao.alternativasVisual = embaralharArray(
-      perguntaAplicacao.alternativas.map(
-        (alternativa, indiceAlternativaOriginal) => ({
-          ...alternativa,
-          indiceAlternativaOriginal
+  perguntasAplicacao =
+    embaralharArray(
+      perguntas.map(
+        (pergunta, indiceOriginal) => ({
+          ...pergunta,
+          indiceOriginal
         })
       )
     );
-  });
+
+  respostas =
+    new Array(perguntas.length).fill(null);
+
+  perguntasAplicacao.forEach(
+    (perguntaAplicacao) => {
+
+      perguntaAplicacao.alternativasVisual =
+        embaralharArray(
+          perguntaAplicacao.alternativas.map(
+            (
+              alternativa,
+              indiceAlternativaOriginal
+            ) => ({
+              ...alternativa,
+              indiceAlternativaOriginal
+            })
+          )
+        );
+    }
+  );
 }
+
+
+/* PROGRESSO */
 
 function atualizarProgresso() {
-  const atual = indiceAtual + 1;
-  const percentual = Math.round(
-    (atual / perguntasAplicacao.length) * 100
-  );
+  const atual =
+    indiceAtual + 1;
+
+  const percentual =
+    Math.round(
+      (
+        atual /
+        perguntasAplicacao.length
+      ) * 100
+    );
 
   numeroAtual.textContent = atual;
-  percentualProgresso.textContent = `${percentual}%`;
-  barraProgresso.style.width = `${percentual}%`;
+
+  percentualProgresso.textContent =
+    `${percentual}%`;
+
+  barraProgresso.style.width =
+    `${percentual}%`;
 }
 
+
+/* PERGUNTA */
+
 function renderizarPergunta() {
-  const perguntaAtual = perguntasAplicacao[indiceAtual];
-  const alternativas = perguntaAtual.alternativasVisual;
+  const perguntaAtual =
+    perguntasAplicacao[indiceAtual];
+
+  const alternativas =
+    perguntaAtual.alternativasVisual;
 
   atualizarProgresso();
 
-  tipoPergunta.textContent = perguntaAtual.tipo;
-  textoPergunta.textContent = perguntaAtual.pergunta;
+  tipoPergunta.textContent =
+    perguntaAtual.tipo;
+
+  textoPergunta.textContent =
+    perguntaAtual.pergunta;
 
   alternativasContainer.innerHTML = "";
 
-  const letrasVisuais = ["A", "B", "C", "D"];
+  const letrasVisuais =
+    ["A", "B", "C", "D"];
 
-  alternativas.forEach((alternativaVisual, indiceVisual) => {
-    const botao = document.createElement("button");
+  alternativas.forEach(
+    (
+      alternativaVisual,
+      indiceVisual
+    ) => {
 
-    botao.type = "button";
-    botao.className = "alternativa";
+      const botao =
+        document.createElement("button");
 
-    const respostaSalva =
-      respostas[perguntaAtual.indiceOriginal];
+      botao.type = "button";
+      botao.className = "alternativa";
 
-    if (
-      respostaSalva ===
-      alternativaVisual.indiceAlternativaOriginal
-    ) {
-      botao.classList.add("selecionada");
+      const respostaSalva =
+        respostas[
+          perguntaAtual.indiceOriginal
+        ];
+
+      if (
+        respostaSalva ===
+        alternativaVisual
+          .indiceAlternativaOriginal
+      ) {
+        botao.classList.add(
+          "selecionada"
+        );
+      }
+
+      botao.innerHTML = `
+        <span class="alternativa-letra">
+          ${letrasVisuais[indiceVisual]}
+        </span>
+
+        <span>
+          ${alternativaVisual.texto}
+        </span>
+      `;
+
+      botao.addEventListener(
+        "click",
+        () => {
+
+          respostas[
+            perguntaAtual.indiceOriginal
+          ] =
+            alternativaVisual
+              .indiceAlternativaOriginal;
+
+          document
+            .querySelectorAll(
+              ".alternativa"
+            )
+            .forEach((item) => {
+              item.classList.remove(
+                "selecionada"
+              );
+            });
+
+          botao.classList.add(
+            "selecionada"
+          );
+
+          btnAvancar.disabled = false;
+        }
+      );
+
+      alternativasContainer
+        .appendChild(botao);
     }
+  );
 
-    botao.innerHTML = `
-      <span class="alternativa-letra">${letrasVisuais[indiceVisual]}</span>
-      <span>${alternativaVisual.texto}</span>
-    `;
-
-    botao.addEventListener("click", () => {
-      respostas[perguntaAtual.indiceOriginal] =
-        alternativaVisual.indiceAlternativaOriginal;
-
-      document.querySelectorAll(".alternativa").forEach((item) => {
-        item.classList.remove("selecionada");
-      });
-
-      botao.classList.add("selecionada");
-      btnAvancar.disabled = false;
-    });
-
-    alternativasContainer.appendChild(botao);
-  });
-
-  btnVoltar.disabled = indiceAtual === 0;
+  btnVoltar.disabled =
+    indiceAtual === 0;
 
   btnAvancar.disabled =
-    respostas[perguntaAtual.indiceOriginal] === null ||
-    respostas[perguntaAtual.indiceOriginal] === undefined;
+    respostas[
+      perguntaAtual.indiceOriginal
+    ] === null ||
+    respostas[
+      perguntaAtual.indiceOriginal
+    ] === undefined;
 
-  if (indiceAtual === perguntasAplicacao.length - 1) {
-    btnAvancar.textContent = "Ver meu diagnóstico";
+  if (
+    indiceAtual ===
+    perguntasAplicacao.length - 1
+  ) {
+    btnAvancar.textContent =
+      "Ver meu diagnóstico";
   } else {
-    btnAvancar.textContent = "Próxima";
+    btnAvancar.textContent =
+      "Próxima";
   }
 }
 
-function criarBarraDimensao(valor) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "barra-resultado";
 
-  const preenchimento = document.createElement("div");
+/* ELEMENTOS DOS RESULTADOS */
+
+function criarBarraDimensao(valor) {
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.className =
+    "barra-resultado";
+
+  const preenchimento =
+    document.createElement("div");
+
   preenchimento.className =
     "barra-resultado-preenchimento";
-  preenchimento.style.width = `${valor}%`;
 
-  wrapper.appendChild(preenchimento);
+  preenchimento.style.width =
+    `${valor}%`;
+
+  wrapper.appendChild(
+    preenchimento
+  );
 
   return wrapper;
 }
 
 function formatarListaNomes(lista) {
   return lista
-    .map((dimensao) => nomesDimensoes[dimensao])
+    .map(
+      (dimensao) =>
+        nomesDimensoes[dimensao]
+    )
     .join(" e ");
 }
 
+
+/* RENDERIZAÇÃO DO RESULTADO */
+
 function renderizarResultado(resultado) {
-  document.getElementById("resultado-perfil").textContent =
-    resultado.perfil;
+  document
+    .getElementById(
+      "resultado-perfil"
+    )
+    .textContent =
+      resultado.perfil;
+
+  document
+    .getElementById(
+      "texto-perfil"
+    )
+    .textContent =
+      devolutivasPerfis[
+        resultado.perfil
+      ] || "";
 
   const tendenciaElemento =
-    document.getElementById("resultado-tendencia");
+    document.getElementById(
+      "resultado-tendencia"
+    );
 
   if (resultado.tendencia) {
-    tendenciaElemento.textContent = resultado.tendencia;
-    tendenciaElemento.style.display = "block";
+    tendenciaElemento.textContent =
+      resultado.tendencia;
+
+    tendenciaElemento.style.display =
+      "inline-block";
   } else {
     tendenciaElemento.textContent = "";
-    tendenciaElemento.style.display = "none";
+    tendenciaElemento.style.display =
+      "none";
   }
 
-  document.getElementById("valor-ip").textContent =
-    `${resultado.ip}%`;
-
-  document.getElementById("valor-ic").textContent =
-    `${resultado.ic}%`;
-
-  document.getElementById("nivel-ip").textContent =
-    resultado.nivelIP;
-
-  document.getElementById("nivel-ic").textContent =
-    resultado.nivelIC;
-
-  document.getElementById("barra-ip").style.width = "0%";
-  document.getElementById("barra-ic").style.width = "0%";
-
-  setTimeout(() => {
-    document.getElementById("barra-ip").style.width =
+  document
+    .getElementById(
+      "valor-ip"
+    )
+    .textContent =
       `${resultado.ip}%`;
 
-    document.getElementById("barra-ic").style.width =
+  document
+    .getElementById(
+      "valor-ic"
+    )
+    .textContent =
       `${resultado.ic}%`;
+
+  document
+    .getElementById(
+      "nivel-ip"
+    )
+    .textContent =
+      resultado.nivelIP;
+
+  document
+    .getElementById(
+      "nivel-ic"
+    )
+    .textContent =
+      resultado.nivelIC;
+
+  document
+    .getElementById(
+      "barra-ip"
+    )
+    .style.width = "0%";
+
+  document
+    .getElementById(
+      "barra-ic"
+    )
+    .style.width = "0%";
+
+  setTimeout(() => {
+    document
+      .getElementById(
+        "barra-ip"
+      )
+      .style.width =
+        `${resultado.ip}%`;
+
+    document
+      .getElementById(
+        "barra-ic"
+      )
+      .style.width =
+        `${resultado.ic}%`;
   }, 150);
 
   const listaDimensoes =
-    document.getElementById("lista-dimensoes");
+    document.getElementById(
+      "lista-dimensoes"
+    );
 
   listaDimensoes.innerHTML = "";
 
-  Object.keys(resultado.dimensoes).forEach((dimensao) => {
-    const valor = resultado.dimensoes[dimensao];
-    const nivel = resultado.niveisDimensoes[dimensao];
+  Object
+    .keys(resultado.dimensoes)
+    .forEach((dimensao) => {
 
-    const item = document.createElement("div");
-    item.className = "dimensao-item";
+      const valor =
+        resultado.dimensoes[
+          dimensao
+        ];
 
-    const cabecalho = document.createElement("div");
-    cabecalho.className = "dimensao-cabecalho";
+      const nivel =
+        resultado
+          .niveisDimensoes[
+            dimensao
+          ];
 
-    const nome = document.createElement("span");
-    nome.className = "dimensao-nome";
-    nome.textContent = nomesDimensoes[dimensao];
+      const item =
+        document.createElement(
+          "div"
+        );
 
-    const resultadoTexto = document.createElement("span");
-    resultadoTexto.className = "dimensao-resultado";
-    resultadoTexto.textContent = `${valor}% · ${nivel}`;
+      item.className =
+        "dimensao-item";
 
-    cabecalho.appendChild(nome);
-    cabecalho.appendChild(resultadoTexto);
+      const cabecalho =
+        document.createElement(
+          "div"
+        );
 
-    item.appendChild(cabecalho);
-    item.appendChild(criarBarraDimensao(valor));
+      cabecalho.className =
+        "dimensao-cabecalho";
 
-    listaDimensoes.appendChild(item);
-  });
+      const nome =
+        document.createElement(
+          "span"
+        );
 
-  renderizarDestaque(resultado);
-  renderizarAmpliacao(resultado);
+      nome.className =
+        "dimensao-nome";
+
+      nome.textContent =
+        nomesDimensoes[
+          dimensao
+        ];
+
+      const resultadoTexto =
+        document.createElement(
+          "span"
+        );
+
+      resultadoTexto.className =
+        "dimensao-resultado";
+
+      resultadoTexto.textContent =
+        `${valor}% · ${nivel}`;
+
+      cabecalho.appendChild(
+        nome
+      );
+
+      cabecalho.appendChild(
+        resultadoTexto
+      );
+
+      item.appendChild(
+        cabecalho
+      );
+
+      item.appendChild(
+        criarBarraDimensao(
+          valor
+        )
+      );
+
+      listaDimensoes.appendChild(
+        item
+      );
+    });
+
+  renderizarDestaque(
+    resultado
+  );
+
+  renderizarAmpliacao(
+    resultado
+  );
 }
 
-function renderizarDestaque(resultado) {
-  const maiores = resultado.destaques.maiores;
-  const valor = resultado.destaques.maiorValor;
 
-  const titulo = document.getElementById("titulo-destaque");
-  const texto = document.getElementById("texto-destaque");
+/* DESTAQUE */
+
+function renderizarDestaque(
+  resultado
+) {
+  const maiores =
+    resultado.destaques.maiores;
+
+  const valor =
+    resultado
+      .destaques
+      .maiorValor;
+
+  const titulo =
+    document.getElementById(
+      "titulo-destaque"
+    );
+
+  const texto =
+    document.getElementById(
+      "texto-destaque"
+    );
+
   const reflexao =
-    document.getElementById("reflexao-destaque");
+    document.getElementById(
+      "reflexao-destaque"
+    );
 
   if (maiores.length === 1) {
-    const dimensao = maiores[0];
-    const nivel = resultado.niveisDimensoes[dimensao];
+    const dimensao =
+      maiores[0];
+
+    const nivel =
+      resultado
+        .niveisDimensoes[
+          dimensao
+        ];
+
     const devolutiva =
-      devolutivasDimensoes[dimensao][nivel];
+      devolutivasDimensoes[
+        dimensao
+      ][nivel];
 
     titulo.textContent =
       `${nomesDimensoes[dimensao]} — ${valor}% · ${nivel}`;
 
-    texto.textContent = devolutiva.texto;
-    reflexao.textContent = devolutiva.reflexao;
-  } else {
-    titulo.textContent =
-      `${formatarListaNomes(maiores)} — ${valor}%`;
+    texto.textContent =
+      devolutiva.texto;
 
-    const primeiraDimensao = maiores[0];
+    reflexao.textContent =
+      devolutiva.reflexao;
+
+  } else {
+
+    titulo.textContent =
+      `${formatarListaNomes(
+        maiores
+      )} — ${valor}%`;
+
+    const primeiraDimensao =
+      maiores[0];
+
     const nivel =
-      resultado.niveisDimensoes[primeiraDimensao];
+      resultado
+        .niveisDimensoes[
+          primeiraDimensao
+        ];
 
     const devolutiva =
-      devolutivasDimensoes[primeiraDimensao][nivel];
+      devolutivasDimensoes[
+        primeiraDimensao
+      ][nivel];
 
     texto.textContent =
       `Seu resultado apresenta empate entre ${formatarListaNomes(
         maiores
       )}, indicando que essas dimensões aparecem como os principais destaques do seu diagnóstico.`;
 
-    reflexao.textContent = devolutiva.reflexao;
+    reflexao.textContent =
+      devolutiva.reflexao;
   }
 }
 
-function renderizarAmpliacao(resultado) {
-  const menores = resultado.destaques.menores;
-  const valor = resultado.destaques.menorValor;
+
+/* AMPLIAÇÃO */
+
+function renderizarAmpliacao(
+  resultado
+) {
+  const menores =
+    resultado.destaques.menores;
+
+  const valor =
+    resultado
+      .destaques
+      .menorValor;
 
   const titulo =
-    document.getElementById("titulo-ampliacao");
+    document.getElementById(
+      "titulo-ampliacao"
+    );
 
   const texto =
-    document.getElementById("texto-ampliacao");
+    document.getElementById(
+      "texto-ampliacao"
+    );
 
   if (menores.length === 1) {
-    const dimensao = menores[0];
-    const nivel = resultado.niveisDimensoes[dimensao];
+    const dimensao =
+      menores[0];
+
+    const nivel =
+      resultado
+        .niveisDimensoes[
+          dimensao
+        ];
 
     titulo.textContent =
       `${nomesDimensoes[dimensao]} — ${valor}% · ${nivel}`;
 
-    texto.textContent = ampliacoes[dimensao];
+    texto.textContent =
+      ampliacoes[
+        dimensao
+      ];
+
   } else {
+
     titulo.textContent =
-      `${formatarListaNomes(menores)} — ${valor}%`;
+      `${formatarListaNomes(
+        menores
+      )} — ${valor}%`;
 
     texto.textContent =
       "Essas dimensões apresentam, neste diagnóstico, maior possibilidade de ampliação. Elas podem ser fortalecidas gradualmente em novas situações pedagógicas com TDICs.";
   }
 }
 
+
+/* ID */
+
 function gerarIdParticipante() {
-  const agora = Date.now();
-  const aleatorio = Math.random()
-    .toString(36)
-    .substring(2, 8)
-    .toUpperCase();
+  const agora =
+    Date.now();
+
+  const aleatorio =
+    Math.random()
+      .toString(36)
+      .substring(2, 8)
+      .toUpperCase();
 
   return `TDIC-${agora}-${aleatorio}`;
 }
 
-function prepararDadosParaPlanilha(resultado) {
-  const dados = {
-    id: gerarIdParticipante(),
 
-    Area_Atuacao: dadosParticipante.area,
+/* DADOS DA PLANILHA */
+
+function prepararDadosParaPlanilha(
+  resultado
+) {
+  const dados = {
+    id:
+      gerarIdParticipante(),
+
+    Area_Atuacao:
+      dadosParticipante.area,
 
     Disciplina:
-      dadosParticipante.disciplinas.join(" | "),
+      dadosParticipante
+        .disciplinas
+        .join(" | "),
 
     Etapa_Ensino:
-      dadosParticipante.etapas.join(" | "),
+      dadosParticipante
+        .etapas
+        .join(" | "),
 
     Tempo_Docencia:
-      dadosParticipante.tempoDocencia,
+      dadosParticipante
+        .tempoDocencia,
 
     Frequencia_TDIC:
-      dadosParticipante.frequenciaTDIC,
+      dadosParticipante
+        .frequenciaTDIC,
 
     Consentimento:
-      dadosParticipante.consentimento ? "Sim" : "Não",
+      dadosParticipante
+        .consentimento
+        ? "Sim"
+        : "Não",
 
-    D1: resultado.dimensoes.D1,
-    D2: resultado.dimensoes.D2,
-    D3: resultado.dimensoes.D3,
-    D4: resultado.dimensoes.D4,
-    D5: resultado.dimensoes.D5,
-    D6: resultado.dimensoes.D6,
-    D7: resultado.dimensoes.D7,
+    D1:
+      resultado.dimensoes.D1,
 
-    IP: resultado.ip,
-    IC: resultado.ic,
+    D2:
+      resultado.dimensoes.D2,
 
-    Nivel_IP: resultado.nivelIP,
-    Nivel_IC: resultado.nivelIC,
+    D3:
+      resultado.dimensoes.D3,
 
-    Perfil: resultado.perfil,
-    Tendencia: resultado.tendencia || "",
+    D4:
+      resultado.dimensoes.D4,
+
+    D5:
+      resultado.dimensoes.D5,
+
+    D6:
+      resultado.dimensoes.D6,
+
+    D7:
+      resultado.dimensoes.D7,
+
+    IP:
+      resultado.ip,
+
+    IC:
+      resultado.ic,
+
+    Nivel_IP:
+      resultado.nivelIP,
+
+    Nivel_IC:
+      resultado.nivelIC,
+
+    Perfil:
+      resultado.perfil,
+
+    Tendencia:
+      resultado.tendencia || "",
 
     Destaque:
-      formatarListaNomes(resultado.destaques.maiores),
+      formatarListaNomes(
+        resultado
+          .destaques
+          .maiores
+      ),
 
     Ampliacao:
-      formatarListaNomes(resultado.destaques.menores)
+      formatarListaNomes(
+        resultado
+          .destaques
+          .menores
+      )
   };
 
-  perguntas.forEach((pergunta, indice) => {
-    const respostaOriginal = respostas[indice];
+  perguntas.forEach(
+    (pergunta, indice) => {
 
-    if (
-      respostaOriginal !== null &&
-      respostaOriginal !== undefined
-    ) {
-      dados[`Q${indice + 1}`] =
-        pergunta.alternativas[respostaOriginal].letra;
-    } else {
-      dados[`Q${indice + 1}`] = "";
+      const respostaOriginal =
+        respostas[indice];
+
+      if (
+        respostaOriginal !== null &&
+        respostaOriginal !== undefined
+      ) {
+        dados[`Q${indice + 1}`] =
+          pergunta
+            .alternativas[
+              respostaOriginal
+            ]
+            .letra;
+      } else {
+        dados[`Q${indice + 1}`] =
+          "";
+      }
     }
-  });
+  );
 
   return dados;
 }
 
-async function enviarParaPlanilha(resultado) {
-  const dados = prepararDadosParaPlanilha(resultado);
+
+/* ENVIO */
+
+async function enviarParaPlanilha(
+  resultado
+) {
+  const dados =
+    prepararDadosParaPlanilha(
+      resultado
+    );
 
   try {
-    await fetch(URL_PLANILHA, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
-      body: JSON.stringify(dados)
-    });
+    await fetch(
+      URL_PLANILHA,
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+        body:
+          JSON.stringify(
+            dados
+          )
+      }
+    );
 
     return true;
+
   } catch (erro) {
+
     console.error(
       "Não foi possível enviar os dados para a planilha:",
       erro
@@ -472,159 +900,272 @@ async function enviarParaPlanilha(resultado) {
   }
 }
 
-function mostrarStatusEnvio(sucesso) {
-  let aviso = document.getElementById("status-envio");
+
+/* STATUS DO ENVIO */
+
+function mostrarStatusEnvio(
+  sucesso
+) {
+  let aviso =
+    document.getElementById(
+      "status-envio"
+    );
 
   if (!aviso) {
-    aviso = document.createElement("div");
-    aviso.id = "status-envio";
-    aviso.className = "status-envio";
+    aviso =
+      document.createElement(
+        "div"
+      );
+
+    aviso.id =
+      "status-envio";
+
+    aviso.className =
+      "status-envio";
 
     const resultadoContainer =
-      document.querySelector(".resultado-container");
+      document.querySelector(
+        ".resultado-container"
+      );
 
     const topo =
-      document.querySelector(".resultado-topo");
+      document.querySelector(
+        ".resultado-topo"
+      );
 
-    resultadoContainer.insertBefore(aviso, topo.nextSibling);
+    resultadoContainer
+      .insertBefore(
+        aviso,
+        topo.nextSibling
+      );
   }
 
   if (sucesso) {
-    aviso.className = "status-envio sucesso";
+    aviso.className =
+      "status-envio sucesso";
+
     aviso.textContent =
       "Resposta registrada com sucesso.";
   } else {
-    aviso.className = "status-envio aviso";
+    aviso.className =
+      "status-envio aviso";
+
     aviso.textContent =
       "Seu diagnóstico foi concluído, mas não foi possível confirmar o registro dos dados.";
   }
 }
 
+
+/* FINALIZAÇÃO */
+
 function finalizarDiagnostico() {
-  mostrarTela(telaProcessando);
+  mostrarTela(
+    telaProcessando
+  );
 
-  setTimeout(async () => {
-    const resultado = calcularDiagnostico(respostas);
+  setTimeout(
+    async () => {
 
-    renderizarResultado(resultado);
+      const resultado =
+        calcularDiagnostico(
+          respostas
+        );
 
-    const envioSucesso =
-      await enviarParaPlanilha(resultado);
+      renderizarResultado(
+        resultado
+      );
 
-    mostrarTela(telaResultado);
+      const envioSucesso =
+        await enviarParaPlanilha(
+          resultado
+        );
 
-    mostrarStatusEnvio(envioSucesso);
-  }, 900);
+      mostrarTela(
+        telaResultado
+      );
+
+      mostrarStatusEnvio(
+        envioSucesso
+      );
+
+    },
+    900
+  );
 }
+
 
 /* TELA INICIAL */
 
-btnIniciar.addEventListener("click", () => {
-  mostrarTela(telaCaracterizacao);
-  validarCaracterizacao();
-});
+btnIniciar.addEventListener(
+  "click",
+  () => {
+
+    mostrarTela(
+      telaCaracterizacao
+    );
+
+    validarCaracterizacao();
+  }
+);
+
 
 /* CARACTERIZAÇÃO */
 
-btnVoltarInicio.addEventListener("click", () => {
-  mostrarTela(telaInicial);
-});
+btnVoltarInicio.addEventListener(
+  "click",
+  () => {
 
-btnContinuar.addEventListener("click", () => {
-  if (!validarCaracterizacao()) {
-    alert(
-      "Preencha todos os campos e confirme o consentimento antes de continuar."
+    mostrarTela(
+      telaInicial
     );
-    return;
   }
+);
 
-  salvarCaracterizacao();
-  prepararAplicacao();
+btnContinuar.addEventListener(
+  "click",
+  () => {
 
-  indiceAtual = 0;
+    if (
+      !validarCaracterizacao()
+    ) {
+      alert(
+        "Preencha todos os campos e confirme o consentimento antes de continuar."
+      );
 
-  mostrarTela(telaQuiz);
-  renderizarPergunta();
-});
+      return;
+    }
+
+    salvarCaracterizacao();
+
+    prepararAplicacao();
+
+    indiceAtual = 0;
+
+    mostrarTela(
+      telaQuiz
+    );
+
+    renderizarPergunta();
+  }
+);
+
 
 /* QUIZ */
 
-btnVoltar.addEventListener("click", () => {
-  if (indiceAtual > 0) {
-    indiceAtual--;
-    renderizarPergunta();
-  } else {
-    mostrarTela(telaCaracterizacao);
+btnVoltar.addEventListener(
+  "click",
+  () => {
+
+    if (indiceAtual > 0) {
+
+      indiceAtual--;
+
+      renderizarPergunta();
+
+    } else {
+
+      mostrarTela(
+        telaCaracterizacao
+      );
+    }
   }
-});
+);
 
-btnAvancar.addEventListener("click", () => {
-  const perguntaAtual =
-    perguntasAplicacao[indiceAtual];
+btnAvancar.addEventListener(
+  "click",
+  () => {
 
-  const respostaAtual =
-    respostas[perguntaAtual.indiceOriginal];
+    const perguntaAtual =
+      perguntasAplicacao[
+        indiceAtual
+      ];
 
-  if (
-    respostaAtual === null ||
-    respostaAtual === undefined
-  ) {
-    return;
+    const respostaAtual =
+      respostas[
+        perguntaAtual
+          .indiceOriginal
+      ];
+
+    if (
+      respostaAtual === null ||
+      respostaAtual === undefined
+    ) {
+      return;
+    }
+
+    if (
+      indiceAtual <
+      perguntasAplicacao.length - 1
+    ) {
+
+      indiceAtual++;
+
+      renderizarPergunta();
+
+    } else {
+
+      finalizarDiagnostico();
+    }
   }
+);
 
-  if (indiceAtual < perguntasAplicacao.length - 1) {
-    indiceAtual++;
-    renderizarPergunta();
-  } else {
-    finalizarDiagnostico();
-  }
-});
 
 /* REFAZER */
 
-btnRefazer.addEventListener("click", () => {
-  const confirmar = window.confirm(
-    "Deseja realmente refazer o diagnóstico? Suas respostas atuais serão apagadas."
-  );
+btnRefazer.addEventListener(
+  "click",
+  () => {
 
-  if (!confirmar) {
-    return;
+    const confirmar =
+      window.confirm(
+        "Deseja realmente refazer o diagnóstico? Suas respostas atuais serão apagadas."
+      );
+
+    if (!confirmar) {
+      return;
+    }
+
+    respostas = [];
+    perguntasAplicacao = [];
+    indiceAtual = 0;
+
+    dadosParticipante = {
+      area: "",
+      disciplinas: [],
+      etapas: [],
+      tempoDocencia: "",
+      frequenciaTDIC: "",
+      consentimento: false
+    };
+
+    areaAtuacao.value = "";
+    tempoDocencia.value = "";
+    frequenciaTDIC.value = "";
+    consentimento.checked =
+      false;
+
+    document
+      .querySelectorAll(
+        'input[name="disciplina"], input[name="etapa"]'
+      )
+      .forEach((item) => {
+        item.checked = false;
+      });
+
+    btnContinuar.disabled =
+      true;
+
+    const statusEnvio =
+      document.getElementById(
+        "status-envio"
+      );
+
+    if (statusEnvio) {
+      statusEnvio.remove();
+    }
+
+    mostrarTela(
+      telaInicial
+    );
   }
-
-  respostas = [];
-  perguntasAplicacao = [];
-  indiceAtual = 0;
-
-  dadosParticipante = {
-    area: "",
-    disciplinas: [],
-    etapas: [],
-    tempoDocencia: "",
-    frequenciaTDIC: "",
-    consentimento: false
-  };
-
-  areaAtuacao.value = "";
-  tempoDocencia.value = "";
-  frequenciaTDIC.value = "";
-  consentimento.checked = false;
-
-  document
-    .querySelectorAll(
-      'input[name="disciplina"], input[name="etapa"]'
-    )
-    .forEach((item) => {
-      item.checked = false;
-    });
-
-  btnContinuar.disabled = true;
-
-  const statusEnvio =
-    document.getElementById("status-envio");
-
-  if (statusEnvio) {
-    statusEnvio.remove();
-  }
-
-  mostrarTela(telaInicial);
-});
+);
