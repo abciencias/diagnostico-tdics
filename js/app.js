@@ -4,20 +4,39 @@ const URL_PLANILHA =
 let indiceAtual = 0;
 let respostas = new Array(perguntas.length).fill(null);
 
+let dadosParticipante = {
+  area: "",
+  disciplinas: [],
+  etapas: [],
+  tempoDocencia: "",
+  frequenciaTDIC: "",
+  consentimento: false
+};
+
 const telaInicial = document.getElementById("tela-inicial");
+const telaCaracterizacao = document.getElementById("tela-caracterizacao");
 const telaQuiz = document.getElementById("tela-quiz");
 const telaProcessando = document.getElementById("tela-processando");
 const telaResultado = document.getElementById("tela-resultado");
 
 const btnIniciar = document.getElementById("btn-iniciar");
+const btnVoltarInicio = document.getElementById("btn-voltar-inicio");
+const btnContinuar = document.getElementById("btn-continuar");
 const btnVoltar = document.getElementById("btn-voltar");
 const btnAvancar = document.getElementById("btn-avancar");
 const btnRefazer = document.getElementById("btn-refazer");
 
+const areaAtuacao = document.getElementById("area-atuacao");
+const tempoDocencia = document.getElementById("tempo-docencia");
+const frequenciaTDIC = document.getElementById("frequencia-tdic");
+const consentimento = document.getElementById("consentimento");
+
 const numeroAtual = document.getElementById("numero-atual");
 const totalPerguntas = document.getElementById("total-perguntas");
 const percentualProgresso = document.getElementById("percentual-progresso");
-const barraProgresso = document.getElementById("barra-progresso-preenchimento");
+const barraProgresso = document.getElementById(
+  "barra-progresso-preenchimento"
+);
 
 const tipoPergunta = document.getElementById("tipo-pergunta");
 const textoPergunta = document.getElementById("texto-pergunta");
@@ -37,6 +56,57 @@ function mostrarTela(tela) {
     behavior: "smooth"
   });
 }
+
+function obterSelecionados(nome) {
+  return Array.from(
+    document.querySelectorAll(`input[name="${nome}"]:checked`)
+  ).map((item) => item.value);
+}
+
+function validarCaracterizacao() {
+  const disciplinas = obterSelecionados("disciplina");
+  const etapas = obterSelecionados("etapa");
+
+  const valido =
+    areaAtuacao.value !== "" &&
+    disciplinas.length > 0 &&
+    etapas.length > 0 &&
+    tempoDocencia.value !== "" &&
+    frequenciaTDIC.value !== "" &&
+    consentimento.checked;
+
+  btnContinuar.disabled = !valido;
+
+  return valido;
+}
+
+function salvarCaracterizacao() {
+  dadosParticipante = {
+    area: areaAtuacao.value,
+    disciplinas: obterSelecionados("disciplina"),
+    etapas: obterSelecionados("etapa"),
+    tempoDocencia: tempoDocencia.value,
+    frequenciaTDIC: frequenciaTDIC.value,
+    consentimento: consentimento.checked
+  };
+}
+
+[
+  areaAtuacao,
+  tempoDocencia,
+  frequenciaTDIC,
+  consentimento
+].forEach((elemento) => {
+  elemento.addEventListener("change", validarCaracterizacao);
+});
+
+document
+  .querySelectorAll(
+    'input[name="disciplina"], input[name="etapa"]'
+  )
+  .forEach((elemento) => {
+    elemento.addEventListener("change", validarCaracterizacao);
+  });
 
 function embaralharAlternativas(alternativas) {
   const copia = alternativas.map((alternativa, indiceOriginal) => ({
@@ -219,14 +289,9 @@ function renderizarDestaque(resultado) {
   const maiores = resultado.destaques.maiores;
   const valor = resultado.destaques.maiorValor;
 
-  const titulo =
-    document.getElementById("titulo-destaque");
-
-  const texto =
-    document.getElementById("texto-destaque");
-
-  const reflexao =
-    document.getElementById("reflexao-destaque");
+  const titulo = document.getElementById("titulo-destaque");
+  const texto = document.getElementById("texto-destaque");
+  const reflexao = document.getElementById("reflexao-destaque");
 
   if (maiores.length === 1) {
     const dimensao = maiores[0];
@@ -263,11 +328,8 @@ function renderizarAmpliacao(resultado) {
   const menores = resultado.destaques.menores;
   const valor = resultado.destaques.menorValor;
 
-  const titulo =
-    document.getElementById("titulo-ampliacao");
-
-  const texto =
-    document.getElementById("texto-ampliacao");
+  const titulo = document.getElementById("titulo-ampliacao");
+  const texto = document.getElementById("texto-ampliacao");
 
   if (menores.length === 1) {
     const dimensao = menores[0];
@@ -300,6 +362,23 @@ function prepararDadosParaPlanilha(resultado) {
   const dados = {
     id: gerarIdParticipante(),
 
+    Area_Atuacao: dadosParticipante.area,
+
+    Disciplina:
+      dadosParticipante.disciplinas.join(" | "),
+
+    Etapa_Ensino:
+      dadosParticipante.etapas.join(" | "),
+
+    Tempo_Docencia:
+      dadosParticipante.tempoDocencia,
+
+    Frequencia_TDIC:
+      dadosParticipante.frequenciaTDIC,
+
+    Consentimento:
+      dadosParticipante.consentimento ? "Sim" : "Não",
+
     D1: resultado.dimensoes.D1,
     D2: resultado.dimensoes.D2,
     D3: resultado.dimensoes.D3,
@@ -317,13 +396,11 @@ function prepararDadosParaPlanilha(resultado) {
     Perfil: resultado.perfil,
     Tendencia: resultado.tendencia || "",
 
-    Destaque: formatarListaNomes(
-      resultado.destaques.maiores
-    ),
+    Destaque:
+      formatarListaNomes(resultado.destaques.maiores),
 
-    Ampliacao: formatarListaNomes(
-      resultado.destaques.menores
-    )
+    Ampliacao:
+      formatarListaNomes(resultado.destaques.menores)
   };
 
   perguntas.forEach((pergunta, indice) => {
@@ -373,27 +450,48 @@ function finalizarDiagnostico() {
 
     renderizarResultado(resultado);
 
-    /*
-      O envio ocorre automaticamente ao final.
-      Mesmo que a conexão com a planilha falhe,
-      o professor ainda recebe o diagnóstico.
-    */
     await enviarParaPlanilha(resultado);
 
     mostrarTela(telaResultado);
   }, 900);
 }
 
+/* TELA INICIAL */
+
 btnIniciar.addEventListener("click", () => {
+  mostrarTela(telaCaracterizacao);
+  validarCaracterizacao();
+});
+
+/* CARACTERIZAÇÃO */
+
+btnVoltarInicio.addEventListener("click", () => {
+  mostrarTela(telaInicial);
+});
+
+btnContinuar.addEventListener("click", () => {
+  if (!validarCaracterizacao()) {
+    alert(
+      "Preencha todos os campos e confirme o consentimento antes de continuar."
+    );
+    return;
+  }
+
+  salvarCaracterizacao();
+
   indiceAtual = 0;
   mostrarTela(telaQuiz);
   renderizarPergunta();
 });
 
+/* QUIZ */
+
 btnVoltar.addEventListener("click", () => {
   if (indiceAtual > 0) {
     indiceAtual--;
     renderizarPergunta();
+  } else {
+    mostrarTela(telaCaracterizacao);
   }
 });
 
@@ -415,6 +513,8 @@ btnAvancar.addEventListener("click", () => {
   }
 });
 
+/* REFAZER */
+
 btnRefazer.addEventListener("click", () => {
   const confirmar = window.confirm(
     "Deseja realmente refazer o diagnóstico? Suas respostas atuais serão apagadas."
@@ -426,6 +526,30 @@ btnRefazer.addEventListener("click", () => {
 
   respostas = new Array(perguntas.length).fill(null);
   indiceAtual = 0;
+
+  dadosParticipante = {
+    area: "",
+    disciplinas: [],
+    etapas: [],
+    tempoDocencia: "",
+    frequenciaTDIC: "",
+    consentimento: false
+  };
+
+  areaAtuacao.value = "";
+  tempoDocencia.value = "";
+  frequenciaTDIC.value = "";
+  consentimento.checked = false;
+
+  document
+    .querySelectorAll(
+      'input[name="disciplina"], input[name="etapa"]'
+    )
+    .forEach((item) => {
+      item.checked = false;
+    });
+
+  btnContinuar.disabled = true;
 
   mostrarTela(telaInicial);
 });
