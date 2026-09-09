@@ -1,3 +1,6 @@
+const URL_PLANILHA =
+  "https://script.google.com/macros/s/AKfycbwTfadzs-iw9Codpmjo-nEMvtMlmCFD5hI5YpxLawxNv2Gwkr1OcOhVSt5bxnKdySnn/exec";
+
 let indiceAtual = 0;
 let respostas = new Array(perguntas.length).fill(null);
 
@@ -49,10 +52,6 @@ function embaralharAlternativas(alternativas) {
   return copia;
 }
 
-/*
-  Embaralha as alternativas de cada pergunta uma única vez
-  quando o app é carregado.
-*/
 const alternativasEmbaralhadas = perguntas.map((pergunta) =>
   embaralharAlternativas(pergunta.alternativas)
 );
@@ -87,11 +86,6 @@ function renderizarPergunta() {
 
     const respostaSalva = respostas[indiceAtual];
 
-    /*
-      A resposta armazenada continua sendo o índice original.
-      Isso garante que a pontuação permaneça correta mesmo
-      quando a ordem visual das alternativas é embaralhada.
-    */
     if (respostaSalva === alternativaVisual.indiceOriginal) {
       botao.classList.add("selecionada");
     }
@@ -174,9 +168,6 @@ function renderizarResultado(resultado) {
   document.getElementById("nivel-ic").textContent =
     resultado.nivelIC;
 
-  /*
-    Reinicia as barras antes de animá-las.
-  */
   document.getElementById("barra-ip").style.width = "0%";
   document.getElementById("barra-ic").style.width = "0%";
 
@@ -295,13 +286,99 @@ function renderizarAmpliacao(resultado) {
   }
 }
 
+function gerarIdParticipante() {
+  const agora = Date.now();
+  const aleatorio = Math.random()
+    .toString(36)
+    .substring(2, 8)
+    .toUpperCase();
+
+  return `TDIC-${agora}-${aleatorio}`;
+}
+
+function prepararDadosParaPlanilha(resultado) {
+  const dados = {
+    id: gerarIdParticipante(),
+
+    D1: resultado.dimensoes.D1,
+    D2: resultado.dimensoes.D2,
+    D3: resultado.dimensoes.D3,
+    D4: resultado.dimensoes.D4,
+    D5: resultado.dimensoes.D5,
+    D6: resultado.dimensoes.D6,
+    D7: resultado.dimensoes.D7,
+
+    IP: resultado.ip,
+    IC: resultado.ic,
+
+    Nivel_IP: resultado.nivelIP,
+    Nivel_IC: resultado.nivelIC,
+
+    Perfil: resultado.perfil,
+    Tendencia: resultado.tendencia || "",
+
+    Destaque: formatarListaNomes(
+      resultado.destaques.maiores
+    ),
+
+    Ampliacao: formatarListaNomes(
+      resultado.destaques.menores
+    )
+  };
+
+  perguntas.forEach((pergunta, indice) => {
+    const respostaOriginal = respostas[indice];
+
+    if (
+      respostaOriginal !== null &&
+      respostaOriginal !== undefined
+    ) {
+      dados[`Q${indice + 1}`] =
+        pergunta.alternativas[respostaOriginal].letra;
+    } else {
+      dados[`Q${indice + 1}`] = "";
+    }
+  });
+
+  return dados;
+}
+
+async function enviarParaPlanilha(resultado) {
+  const dados = prepararDadosParaPlanilha(resultado);
+
+  try {
+    await fetch(URL_PLANILHA, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(dados)
+    });
+
+    console.log("Dados enviados para a planilha.");
+  } catch (erro) {
+    console.error(
+      "Não foi possível enviar os dados para a planilha:",
+      erro
+    );
+  }
+}
+
 function finalizarDiagnostico() {
   mostrarTela(telaProcessando);
 
-  setTimeout(() => {
+  setTimeout(async () => {
     const resultado = calcularDiagnostico(respostas);
 
     renderizarResultado(resultado);
+
+    /*
+      O envio ocorre automaticamente ao final.
+      Mesmo que a conexão com a planilha falhe,
+      o professor ainda recebe o diagnóstico.
+    */
+    await enviarParaPlanilha(resultado);
 
     mostrarTela(telaResultado);
   }, 900);
