@@ -557,3 +557,145 @@ p {
     font-size: 0.9rem;
   }
 }
+/* MELHORIAS VISUAIS DA TELA DE RESULTADO */
+
+.resultado-topo {
+  background: linear-gradient(
+    135deg,
+    rgba(63, 111, 216, 0.08),
+    rgba(63, 111, 216, 0.02)
+  );
+  border: 1px solid var(--cor-borda);
+  border-radius: 20px;
+  padding: 28px 20px;
+  box-shadow: var(--sombra);
+}
+
+.resultado-topo .rotulo {
+  margin-bottom: 10px;
+}
+
+.resultado-topo h1 {
+  color: var(--cor-principal);
+  letter-spacing: -0.5px;
+}
+
+.resultado-tendencia {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--cor-suave);
+  color: var(--cor-principal-escura);
+  font-weight: 700;
+}
+
+.status-envio {
+  margin: 18px 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.status-envio.sucesso {
+  background: #eefaf2;
+  border: 1px solid #cdebd5;
+  color: #2f6e43;
+}
+
+.status-envio.aviso {
+  background: #fff8e8;
+  border: 1px solid #f2dfaa;
+  color: #7a5a12;
+}
+
+.resultado-container > .card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.resultado-container > .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(31, 41, 55, 0.1);
+}
+
+.indice {
+  padding: 16px;
+  border-radius: 14px;
+  background: #fafcff;
+  border: 1px solid var(--cor-borda);
+}
+
+.indice + .indice {
+  margin-top: 14px;
+}
+
+.nivel {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--cor-suave);
+  color: var(--cor-principal-escura);
+}
+
+.dimensao-item {
+  padding: 18px 0;
+}
+
+.dimensao-nome {
+  max-width: 70%;
+}
+
+.dimensao-resultado {
+  font-weight: 700;
+}
+
+.card-destaque {
+  border-left: 5px solid var(--cor-principal);
+}
+
+.card-destaque h2 {
+  color: var(--cor-principal-escura);
+}
+
+.card-ampliacao {
+  border-left: 5px solid #9aa8bc;
+}
+
+.card-ampliacao h2 {
+  color: #4b5563;
+}
+
+.reflexao {
+  font-weight: 600;
+}
+
+.metodologia {
+  background: #fafbfd;
+}
+
+.metodologia summary {
+  color: var(--cor-principal-escura);
+}
+
+@media (max-width: 700px) {
+  .resultado-topo {
+    padding: 22px 16px;
+  }
+
+  .resultado-topo h1 {
+    font-size: 2rem;
+  }
+
+  .dimensao-cabecalho {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .dimensao-nome {
+    max-width: 100%;
+  }
+
+  .dimensao-resultado {
+    white-space: normal;
+  }
+}
