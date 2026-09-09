@@ -49,6 +49,10 @@ function embaralharAlternativas(alternativas) {
   return copia;
 }
 
+/*
+  Embaralha as alternativas de cada pergunta uma única vez
+  quando o app é carregado.
+*/
 const alternativasEmbaralhadas = perguntas.map((pergunta) =>
   embaralharAlternativas(pergunta.alternativas)
 );
@@ -73,7 +77,9 @@ function renderizarPergunta() {
 
   alternativasContainer.innerHTML = "";
 
-  alternativas.forEach((alternativaVisual) => {
+  const letrasVisuais = ["A", "B", "C", "D"];
+
+  alternativas.forEach((alternativaVisual, indiceVisual) => {
     const botao = document.createElement("button");
 
     botao.type = "button";
@@ -81,12 +87,17 @@ function renderizarPergunta() {
 
     const respostaSalva = respostas[indiceAtual];
 
+    /*
+      A resposta armazenada continua sendo o índice original.
+      Isso garante que a pontuação permaneça correta mesmo
+      quando a ordem visual das alternativas é embaralhada.
+    */
     if (respostaSalva === alternativaVisual.indiceOriginal) {
       botao.classList.add("selecionada");
     }
 
     botao.innerHTML = `
-      <span class="alternativa-letra">${alternativaVisual.letra}</span>
+      <span class="alternativa-letra">${letrasVisuais[indiceVisual]}</span>
       <span>${alternativaVisual.texto}</span>
     `;
 
@@ -131,14 +142,17 @@ function criarBarraDimensao(valor) {
 }
 
 function formatarListaNomes(lista) {
-  return lista.map((dimensao) => nomesDimensoes[dimensao]).join(" e ");
+  return lista
+    .map((dimensao) => nomesDimensoes[dimensao])
+    .join(" e ");
 }
 
 function renderizarResultado(resultado) {
   document.getElementById("resultado-perfil").textContent =
     resultado.perfil;
 
-  const tendenciaElemento = document.getElementById("resultado-tendencia");
+  const tendenciaElemento =
+    document.getElementById("resultado-tendencia");
 
   if (resultado.tendencia) {
     tendenciaElemento.textContent = resultado.tendencia;
@@ -160,6 +174,12 @@ function renderizarResultado(resultado) {
   document.getElementById("nivel-ic").textContent =
     resultado.nivelIC;
 
+  /*
+    Reinicia as barras antes de animá-las.
+  */
+  document.getElementById("barra-ip").style.width = "0%";
+  document.getElementById("barra-ic").style.width = "0%";
+
   setTimeout(() => {
     document.getElementById("barra-ip").style.width =
       `${resultado.ip}%`;
@@ -168,7 +188,8 @@ function renderizarResultado(resultado) {
       `${resultado.ic}%`;
   }, 150);
 
-  const listaDimensoes = document.getElementById("lista-dimensoes");
+  const listaDimensoes =
+    document.getElementById("lista-dimensoes");
 
   listaDimensoes.innerHTML = "";
 
@@ -207,14 +228,20 @@ function renderizarDestaque(resultado) {
   const maiores = resultado.destaques.maiores;
   const valor = resultado.destaques.maiorValor;
 
-  const titulo = document.getElementById("titulo-destaque");
-  const texto = document.getElementById("texto-destaque");
-  const reflexao = document.getElementById("reflexao-destaque");
+  const titulo =
+    document.getElementById("titulo-destaque");
+
+  const texto =
+    document.getElementById("texto-destaque");
+
+  const reflexao =
+    document.getElementById("reflexao-destaque");
 
   if (maiores.length === 1) {
     const dimensao = maiores[0];
     const nivel = resultado.niveisDimensoes[dimensao];
-    const devolutiva = devolutivasDimensoes[dimensao][nivel];
+    const devolutiva =
+      devolutivasDimensoes[dimensao][nivel];
 
     titulo.textContent =
       `${nomesDimensoes[dimensao]} — ${valor}% · ${nivel}`;
@@ -226,7 +253,9 @@ function renderizarDestaque(resultado) {
       `${formatarListaNomes(maiores)} — ${valor}%`;
 
     const primeiraDimensao = maiores[0];
-    const nivel = resultado.niveisDimensoes[primeiraDimensao];
+    const nivel =
+      resultado.niveisDimensoes[primeiraDimensao];
+
     const devolutiva =
       devolutivasDimensoes[primeiraDimensao][nivel];
 
@@ -243,8 +272,11 @@ function renderizarAmpliacao(resultado) {
   const menores = resultado.destaques.menores;
   const valor = resultado.destaques.menorValor;
 
-  const titulo = document.getElementById("titulo-ampliacao");
-  const texto = document.getElementById("texto-ampliacao");
+  const titulo =
+    document.getElementById("titulo-ampliacao");
+
+  const texto =
+    document.getElementById("texto-ampliacao");
 
   if (menores.length === 1) {
     const dimensao = menores[0];
@@ -291,7 +323,10 @@ btnVoltar.addEventListener("click", () => {
 btnAvancar.addEventListener("click", () => {
   const respostaAtual = respostas[indiceAtual];
 
-  if (respostaAtual === null || respostaAtual === undefined) {
+  if (
+    respostaAtual === null ||
+    respostaAtual === undefined
+  ) {
     return;
   }
 
