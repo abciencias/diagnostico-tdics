@@ -2,7 +2,8 @@ const URL_PLANILHA =
   "https://script.google.com/macros/s/AKfycbwTfadzs-iw9Codpmjo-nEMvtMlmCFD5hI5YpxLawxNv2Gwkr1OcOhVSt5bxnKdySnn/exec";
 
 let indiceAtual = 0;
-let respostas = new Array(perguntas.length).fill(null);
+let respostas = [];
+let perguntasAplicacao = [];
 
 let dadosParticipante = {
   area: "",
@@ -108,11 +109,8 @@ document
     elemento.addEventListener("change", validarCaracterizacao);
   });
 
-function embaralharAlternativas(alternativas) {
-  const copia = alternativas.map((alternativa, indiceOriginal) => ({
-    ...alternativa,
-    indiceOriginal
-  }));
+function embaralharArray(array) {
+  const copia = [...array];
 
   for (let i = copia.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -122,13 +120,33 @@ function embaralharAlternativas(alternativas) {
   return copia;
 }
 
-const alternativasEmbaralhadas = perguntas.map((pergunta) =>
-  embaralharAlternativas(pergunta.alternativas)
-);
+function prepararAplicacao() {
+  perguntasAplicacao = embaralharArray(
+    perguntas.map((pergunta, indiceOriginal) => ({
+      ...pergunta,
+      indiceOriginal
+    }))
+  );
+
+  respostas = new Array(perguntas.length).fill(null);
+
+  perguntasAplicacao.forEach((perguntaAplicacao) => {
+    perguntaAplicacao.alternativasVisual = embaralharArray(
+      perguntaAplicacao.alternativas.map(
+        (alternativa, indiceAlternativaOriginal) => ({
+          ...alternativa,
+          indiceAlternativaOriginal
+        })
+      )
+    );
+  });
+}
 
 function atualizarProgresso() {
   const atual = indiceAtual + 1;
-  const percentual = Math.round((atual / perguntas.length) * 100);
+  const percentual = Math.round(
+    (atual / perguntasAplicacao.length) * 100
+  );
 
   numeroAtual.textContent = atual;
   percentualProgresso.textContent = `${percentual}%`;
@@ -136,8 +154,8 @@ function atualizarProgresso() {
 }
 
 function renderizarPergunta() {
-  const perguntaAtual = perguntas[indiceAtual];
-  const alternativas = alternativasEmbaralhadas[indiceAtual];
+  const perguntaAtual = perguntasAplicacao[indiceAtual];
+  const alternativas = perguntaAtual.alternativasVisual;
 
   atualizarProgresso();
 
@@ -154,9 +172,13 @@ function renderizarPergunta() {
     botao.type = "button";
     botao.className = "alternativa";
 
-    const respostaSalva = respostas[indiceAtual];
+    const respostaSalva =
+      respostas[perguntaAtual.indiceOriginal];
 
-    if (respostaSalva === alternativaVisual.indiceOriginal) {
+    if (
+      respostaSalva ===
+      alternativaVisual.indiceAlternativaOriginal
+    ) {
       botao.classList.add("selecionada");
     }
 
@@ -166,7 +188,8 @@ function renderizarPergunta() {
     `;
 
     botao.addEventListener("click", () => {
-      respostas[indiceAtual] = alternativaVisual.indiceOriginal;
+      respostas[perguntaAtual.indiceOriginal] =
+        alternativaVisual.indiceAlternativaOriginal;
 
       document.querySelectorAll(".alternativa").forEach((item) => {
         item.classList.remove("selecionada");
@@ -182,10 +205,10 @@ function renderizarPergunta() {
   btnVoltar.disabled = indiceAtual === 0;
 
   btnAvancar.disabled =
-    respostas[indiceAtual] === null ||
-    respostas[indiceAtual] === undefined;
+    respostas[perguntaAtual.indiceOriginal] === null ||
+    respostas[perguntaAtual.indiceOriginal] === undefined;
 
-  if (indiceAtual === perguntas.length - 1) {
+  if (indiceAtual === perguntasAplicacao.length - 1) {
     btnAvancar.textContent = "Ver meu diagnóstico";
   } else {
     btnAvancar.textContent = "Próxima";
@@ -197,7 +220,8 @@ function criarBarraDimensao(valor) {
   wrapper.className = "barra-resultado";
 
   const preenchimento = document.createElement("div");
-  preenchimento.className = "barra-resultado-preenchimento";
+  preenchimento.className =
+    "barra-resultado-preenchimento";
   preenchimento.style.width = `${valor}%`;
 
   wrapper.appendChild(preenchimento);
@@ -291,7 +315,8 @@ function renderizarDestaque(resultado) {
 
   const titulo = document.getElementById("titulo-destaque");
   const texto = document.getElementById("texto-destaque");
-  const reflexao = document.getElementById("reflexao-destaque");
+  const reflexao =
+    document.getElementById("reflexao-destaque");
 
   if (maiores.length === 1) {
     const dimensao = maiores[0];
@@ -328,8 +353,11 @@ function renderizarAmpliacao(resultado) {
   const menores = resultado.destaques.menores;
   const valor = resultado.destaques.menorValor;
 
-  const titulo = document.getElementById("titulo-ampliacao");
-  const texto = document.getElementById("texto-ampliacao");
+  const titulo =
+    document.getElementById("titulo-ampliacao");
+
+  const texto =
+    document.getElementById("texto-ampliacao");
 
   if (menores.length === 1) {
     const dimensao = menores[0];
@@ -433,12 +461,42 @@ async function enviarParaPlanilha(resultado) {
       body: JSON.stringify(dados)
     });
 
-    console.log("Dados enviados para a planilha.");
+    return true;
   } catch (erro) {
     console.error(
       "Não foi possível enviar os dados para a planilha:",
       erro
     );
+
+    return false;
+  }
+}
+
+function mostrarStatusEnvio(sucesso) {
+  let aviso = document.getElementById("status-envio");
+
+  if (!aviso) {
+    aviso = document.createElement("div");
+    aviso.id = "status-envio";
+    aviso.className = "status-envio";
+
+    const resultadoContainer =
+      document.querySelector(".resultado-container");
+
+    const topo =
+      document.querySelector(".resultado-topo");
+
+    resultadoContainer.insertBefore(aviso, topo.nextSibling);
+  }
+
+  if (sucesso) {
+    aviso.className = "status-envio sucesso";
+    aviso.textContent =
+      "Resposta registrada com sucesso.";
+  } else {
+    aviso.className = "status-envio aviso";
+    aviso.textContent =
+      "Seu diagnóstico foi concluído, mas não foi possível confirmar o registro dos dados.";
   }
 }
 
@@ -450,9 +508,12 @@ function finalizarDiagnostico() {
 
     renderizarResultado(resultado);
 
-    await enviarParaPlanilha(resultado);
+    const envioSucesso =
+      await enviarParaPlanilha(resultado);
 
     mostrarTela(telaResultado);
+
+    mostrarStatusEnvio(envioSucesso);
   }, 900);
 }
 
@@ -478,8 +539,10 @@ btnContinuar.addEventListener("click", () => {
   }
 
   salvarCaracterizacao();
+  prepararAplicacao();
 
   indiceAtual = 0;
+
   mostrarTela(telaQuiz);
   renderizarPergunta();
 });
@@ -496,7 +559,11 @@ btnVoltar.addEventListener("click", () => {
 });
 
 btnAvancar.addEventListener("click", () => {
-  const respostaAtual = respostas[indiceAtual];
+  const perguntaAtual =
+    perguntasAplicacao[indiceAtual];
+
+  const respostaAtual =
+    respostas[perguntaAtual.indiceOriginal];
 
   if (
     respostaAtual === null ||
@@ -505,7 +572,7 @@ btnAvancar.addEventListener("click", () => {
     return;
   }
 
-  if (indiceAtual < perguntas.length - 1) {
+  if (indiceAtual < perguntasAplicacao.length - 1) {
     indiceAtual++;
     renderizarPergunta();
   } else {
@@ -524,7 +591,8 @@ btnRefazer.addEventListener("click", () => {
     return;
   }
 
-  respostas = new Array(perguntas.length).fill(null);
+  respostas = [];
+  perguntasAplicacao = [];
   indiceAtual = 0;
 
   dadosParticipante = {
@@ -550,6 +618,13 @@ btnRefazer.addEventListener("click", () => {
     });
 
   btnContinuar.disabled = true;
+
+  const statusEnvio =
+    document.getElementById("status-envio");
+
+  if (statusEnvio) {
+    statusEnvio.remove();
+  }
 
   mostrarTela(telaInicial);
 });
