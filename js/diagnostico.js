@@ -8,6 +8,29 @@ const nomesDimensoes = {
   D7: "Criticidade tecnológica"
 };
 
+
+/* DEVOLUTIVAS DOS PERFIS GERAIS */
+
+const devolutivasPerfis = {
+  Instrumental:
+    "Suas respostas indicam que as TDICs são utilizadas predominantemente como recursos de apoio às atividades pedagógicas, contribuindo para apresentar conteúdos, acessar informações, organizar tarefas ou tornar as aulas mais dinâmicas. O diagnóstico aponta possibilidades de ampliar o papel das tecnologias para favorecer investigação, produção, argumentação, tomada de decisão e reflexão crítica.",
+
+  Pedagógico:
+    "Suas respostas indicam que as TDICs são utilizadas de maneira intencional e articulada aos objetivos de ensino e aprendizagem. As tecnologias tendem a favorecer participação, produção, investigação e construção do conhecimento. O diagnóstico aponta possibilidades de ampliar a dimensão crítica dessas práticas, incorporando problematização, análise de diferentes perspectivas, questões sociocientíficas e reflexão sobre as próprias tecnologias.",
+
+  Crítico:
+    "Suas respostas indicam forte presença de problematização, análise de informações, avaliação de argumentos e reflexão sobre as relações entre ciência, tecnologia e sociedade. Também aparecem elementos relacionados à cidadania, tomada de decisão ou análise crítica das tecnologias. Há possibilidades de articular essa criticidade de maneira ainda mais consistente aos objetivos e processos de aprendizagem mediados pelas TDICs.",
+
+  "Crítico-pedagógico":
+    "Suas respostas indicam uma integração consistente entre intencionalidade pedagógica e criticidade no uso das TDICs. As tecnologias aparecem não apenas como recursos de apoio à aprendizagem, mas também como meios para investigar, analisar informações, argumentar, problematizar relações entre ciência, tecnologia e sociedade, favorecer decisões fundamentadas e refletir sobre as próprias tecnologias.",
+
+  "Em transição":
+    "Seu resultado indica que a utilização das TDICs reúne características de diferentes perfis. Há elementos pedagógicos e críticos em processo de desenvolvimento, revelando uma prática em movimento. A análise das sete dimensões permite observar quais aspectos já aparecem de forma mais consistente e quais apresentam maior possibilidade de ampliação."
+};
+
+
+/* DEVOLUTIVAS DAS DIMENSÕES */
+
 const devolutivasDimensoes = {
   D1: {
     Emergente: {
@@ -16,12 +39,14 @@ const devolutivasDimensoes = {
       reflexao:
         "Para refletir: o que os estudantes conseguem pensar, produzir ou compreender com essa tecnologia que seja relevante para o objetivo da atividade?"
     },
+
     "Em desenvolvimento": {
       texto:
         "Suas respostas mostram que a escolha das TDICs já considera objetivos de aprendizagem e possibilidades de participação dos estudantes. Entretanto, essa relação ainda varia conforme o conteúdo, recurso ou situação pedagógica.",
       reflexao:
         "Para refletir: a tecnologia apenas facilita a atividade ou modifica qualitativamente aquilo que o estudante pode fazer e aprender?"
     },
+
     Consolidada: {
       texto:
         "A intencionalidade pedagógica aparece de maneira consistente em suas respostas. As TDICs tendem a ser selecionadas a partir dos objetivos de aprendizagem e do papel que podem desempenhar na construção do conhecimento.",
@@ -37,12 +62,14 @@ const devolutivasDimensoes = {
       reflexao:
         "Para refletir: como seus estudantes decidem se uma informação encontrada no ambiente digital merece confiança?"
     },
+
     "Em desenvolvimento": {
       texto:
         "Há indícios de práticas de avaliação e comparação de informações digitais, embora esses procedimentos ainda não apareçam de maneira sistemática em todas as situações.",
       reflexao:
         "Para refletir: seus estudantes conseguem justificar por que confiaram em determinada fonte e não apenas dizer onde encontraram a informação?"
     },
+
     Consolidada: {
       texto:
         "Suas respostas indicam uma preocupação consistente com busca, seleção, avaliação, comparação e circulação de informações digitais.",
@@ -58,12 +85,14 @@ const devolutivasDimensoes = {
       reflexao:
         "Para refletir: seus estudantes utilizam evidências para construir explicações ou principalmente reproduzem informações já apresentadas?"
     },
+
     "Em desenvolvimento": {
       texto:
         "Suas respostas mostram presença de interpretação de dados, evidências e construção de explicações, embora essas práticas ainda apareçam de maneira variável.",
       reflexao:
         "Para refletir: há espaço para diferentes hipóteses e para revisão das conclusões durante suas atividades?"
     },
+
     Consolidada: {
       texto:
         "A alfabetização científica aparece de forma consistente em suas respostas. As TDICs tendem a apoiar interpretação de dados, análise de evidências, construção de explicações e argumentação científica.",
@@ -79,12 +108,14 @@ const devolutivasDimensoes = {
       reflexao:
         "Para refletir: seus estudantes precisam explicar por que concordam ou discordam de determinada informação?"
     },
+
     "Em desenvolvimento": {
       texto:
         "Há presença consistente de análise, comparação e argumentação, embora nem sempre os estudantes sejam incentivados a revisar seus próprios posicionamentos.",
       reflexao:
         "Para refletir: mudar de opinião diante de melhores evidências é valorizado como parte do processo de aprendizagem?"
     },
+
     Consolidada: {
       texto:
         "O pensamento crítico aparece de forma consistente em suas respostas. Os estudantes tendem a analisar argumentos, evidências, perspectivas e contra-argumentos antes de formular conclusões.",
@@ -100,12 +131,14 @@ const devolutivasDimensoes = {
       reflexao:
         "Para refletir: quando uma tecnologia é estudada, os estudantes analisam também quem é afetado por ela e quais consequências podem resultar de sua utilização?"
     },
+
     "Em desenvolvimento": {
       texto:
         "Suas respostas indicam presença das relações entre ciência, tecnologia e sociedade e abertura para questões controversas.",
       reflexao:
         "Para refletir: as controvérsias trabalhadas permitem compreender por que diferentes grupos podem defender posições distintas?"
     },
+
     Consolidada: {
       texto:
         "CTS e QSC aparecem de maneira consistente em suas escolhas. Ciência e tecnologia tendem a ser discutidas em relação a seus contextos sociais, econômicos, ambientais, políticos ou éticos.",
@@ -121,12 +154,14 @@ const devolutivasDimensoes = {
       reflexao:
         "Para refletir: o estudante apenas expressa o que pensa ou precisa explicar em que evidências e critérios sua decisão está baseada?"
     },
+
     "Em desenvolvimento": {
       texto:
         "Suas respostas indicam que os estudantes já têm oportunidades de construir posicionamentos e analisar alternativas.",
       reflexao:
         "Para refletir: depois de compreender um problema, que possibilidades de escolha, participação ou ação os estudantes conseguem reconhecer?"
     },
+
     Consolidada: {
       texto:
         "Formação cidadã e tomada de decisão aparecem de maneira consistente em suas respostas. Os estudantes tendem a avaliar alternativas, utilizar evidências e justificar posicionamentos diante de questões sociais relacionadas à ciência e à tecnologia.",
@@ -142,12 +177,14 @@ const devolutivasDimensoes = {
       reflexao:
         "Para refletir: quem decide como determinada tecnologia deve funcionar e quais grupos podem ser favorecidos ou desfavorecidos por essas escolhas?"
     },
+
     "Em desenvolvimento": {
       texto:
         "Suas respostas demonstram atenção a questões como dados, algoritmos, interesses, riscos ou desigualdades relacionadas às tecnologias.",
       reflexao:
         "Para refletir: além de adaptar o uso de uma tecnologia, é possível questionar ou transformar as escolhas incorporadas ao seu funcionamento?"
     },
+
     Consolidada: {
       texto:
         "A criticidade tecnológica aparece de maneira consistente em suas respostas. As tecnologias tendem a ser compreendidas como construções sociotécnicas relacionadas a valores, interesses, poder, escolhas humanas e consequências sociais.",
@@ -156,6 +193,9 @@ const devolutivasDimensoes = {
     }
   }
 };
+
+
+/* POSSIBILIDADES DE AMPLIAÇÃO */
 
 const ampliacoes = {
   D1:
@@ -180,6 +220,9 @@ const ampliacoes = {
     "Explore mais questões relacionadas à não neutralidade tecnológica, dados, algoritmos, interesses, poder, desigualdades e possibilidades de transformação."
 };
 
+
+/* NÍVEIS */
+
 function classificarNivel(percentual) {
   if (percentual < 40) {
     return "Emergente";
@@ -191,6 +234,9 @@ function classificarNivel(percentual) {
 
   return "Consolidada";
 }
+
+
+/* DIMENSÕES */
 
 function calcularPercentuaisDimensoes(respostas) {
   const totais = {
@@ -206,11 +252,15 @@ function calcularPercentuaisDimensoes(respostas) {
   perguntas.forEach((pergunta, indice) => {
     const respostaSelecionada = respostas[indice];
 
-    if (respostaSelecionada === undefined || respostaSelecionada === null) {
+    if (
+      respostaSelecionada === undefined ||
+      respostaSelecionada === null
+    ) {
       return;
     }
 
-    const alternativa = pergunta.alternativas[respostaSelecionada];
+    const alternativa =
+      pergunta.alternativas[respostaSelecionada];
 
     totais[pergunta.dimensao] += alternativa.pontos;
   });
@@ -218,11 +268,15 @@ function calcularPercentuaisDimensoes(respostas) {
   const percentuais = {};
 
   Object.keys(totais).forEach((dimensao) => {
-    percentuais[dimensao] = Math.round((totais[dimensao] / 8) * 100);
+    percentuais[dimensao] =
+      Math.round((totais[dimensao] / 8) * 100);
   });
 
   return percentuais;
 }
+
+
+/* ÍNDICES */
 
 function calcularIndicePedagogico(dimensoes) {
   return Math.round(
@@ -232,9 +286,17 @@ function calcularIndicePedagogico(dimensoes) {
 
 function calcularIndiceCriticidade(dimensoes) {
   return Math.round(
-    (dimensoes.D4 + dimensoes.D5 + dimensoes.D6 + dimensoes.D7) / 4
+    (
+      dimensoes.D4 +
+      dimensoes.D5 +
+      dimensoes.D6 +
+      dimensoes.D7
+    ) / 4
   );
 }
+
+
+/* CONSISTÊNCIA DO IP */
 
 function classificarIP(ip, dimensoes) {
   if (ip < 40) {
@@ -263,6 +325,9 @@ function classificarIP(ip, dimensoes) {
 
   return "Em desenvolvimento";
 }
+
+
+/* CONSISTÊNCIA DO IC */
 
 function classificarIC(ic, dimensoes) {
   if (ic < 40) {
@@ -294,57 +359,84 @@ function classificarIC(ic, dimensoes) {
   return "Em desenvolvimento";
 }
 
+
+/* PERFIL */
+
 function definirPerfil(ipNivel, icNivel, ip, ic) {
-  if (ipNivel === "Emergente" && icNivel === "Emergente") {
+  if (
+    ipNivel === "Emergente" &&
+    icNivel === "Emergente"
+  ) {
     return {
       perfil: "Instrumental",
       tendencia: ""
     };
   }
 
-  if (ipNivel === "Consolidada" && icNivel === "Emergente") {
+  if (
+    ipNivel === "Consolidada" &&
+    icNivel === "Emergente"
+  ) {
     return {
       perfil: "Pedagógico",
       tendencia: ""
     };
   }
 
-  if (ipNivel === "Emergente" && icNivel === "Consolidada") {
+  if (
+    ipNivel === "Emergente" &&
+    icNivel === "Consolidada"
+  ) {
     return {
       perfil: "Crítico",
       tendencia: ""
     };
   }
 
-  if (ipNivel === "Consolidada" && icNivel === "Consolidada") {
+  if (
+    ipNivel === "Consolidada" &&
+    icNivel === "Consolidada"
+  ) {
     return {
       perfil: "Crítico-pedagógico",
       tendencia: ""
     };
   }
 
-  if (ipNivel === "Consolidada" && icNivel === "Em desenvolvimento") {
+  if (
+    ipNivel === "Consolidada" &&
+    icNivel === "Em desenvolvimento"
+  ) {
     return {
       perfil: "Pedagógico",
       tendencia: "Tendência crítico-pedagógica"
     };
   }
 
-  if (ipNivel === "Em desenvolvimento" && icNivel === "Consolidada") {
+  if (
+    ipNivel === "Em desenvolvimento" &&
+    icNivel === "Consolidada"
+  ) {
     return {
       perfil: "Crítico",
       tendencia: "Tendência crítico-pedagógica"
     };
   }
 
-  if (ipNivel === "Emergente" && icNivel === "Em desenvolvimento") {
+  if (
+    ipNivel === "Emergente" &&
+    icNivel === "Em desenvolvimento"
+  ) {
     return {
       perfil: "Instrumental",
       tendencia: "Tendência crítica"
     };
   }
 
-  if (ipNivel === "Em desenvolvimento" && icNivel === "Emergente") {
+  if (
+    ipNivel === "Em desenvolvimento" &&
+    icNivel === "Emergente"
+  ) {
     return {
       perfil: "Instrumental",
       tendencia: "Tendência pedagógica"
@@ -360,7 +452,8 @@ function definirPerfil(ipNivel, icNivel, ip, ic) {
     if (ip >= 60 && ic >= 60) {
       return {
         perfil: "Em transição",
-        tendencia: "Transição avançada para o crítico-pedagógico"
+        tendencia:
+          "Transição avançada para o crítico-pedagógico"
       };
     }
 
@@ -380,7 +473,8 @@ function definirPerfil(ipNivel, icNivel, ip, ic) {
 
     return {
       perfil: "Em transição",
-      tendencia: "Integração pedagógica e criticidade em desenvolvimento"
+      tendencia:
+        "Integração pedagógica e criticidade em desenvolvimento"
     };
   }
 
@@ -404,11 +498,17 @@ function definirPerfil(ipNivel, icNivel, ip, ic) {
   };
 }
 
+
+/* DESTAQUES */
+
 function encontrarDestaques(dimensoes) {
   const entradas = Object.entries(dimensoes);
 
-  const maiorValor = Math.max(...entradas.map(([, valor]) => valor));
-  const menorValor = Math.min(...entradas.map(([, valor]) => valor));
+  const maiorValor =
+    Math.max(...entradas.map(([, valor]) => valor));
+
+  const menorValor =
+    Math.min(...entradas.map(([, valor]) => valor));
 
   const maiores = entradas
     .filter(([, valor]) => valor === maiorValor)
@@ -426,29 +526,42 @@ function encontrarDestaques(dimensoes) {
   };
 }
 
+
+/* DIAGNÓSTICO FINAL */
+
 function calcularDiagnostico(respostas) {
-  const dimensoes = calcularPercentuaisDimensoes(respostas);
+  const dimensoes =
+    calcularPercentuaisDimensoes(respostas);
 
   const niveisDimensoes = {};
 
   Object.keys(dimensoes).forEach((dimensao) => {
-    niveisDimensoes[dimensao] = classificarNivel(dimensoes[dimensao]);
+    niveisDimensoes[dimensao] =
+      classificarNivel(dimensoes[dimensao]);
   });
 
-  const ip = calcularIndicePedagogico(dimensoes);
-  const ic = calcularIndiceCriticidade(dimensoes);
+  const ip =
+    calcularIndicePedagogico(dimensoes);
 
-  const nivelIP = classificarIP(ip, dimensoes);
-  const nivelIC = classificarIC(ic, dimensoes);
+  const ic =
+    calcularIndiceCriticidade(dimensoes);
 
-  const classificacaoPerfil = definirPerfil(
-    nivelIP,
-    nivelIC,
-    ip,
-    ic
-  );
+  const nivelIP =
+    classificarIP(ip, dimensoes);
 
-  const destaques = encontrarDestaques(dimensoes);
+  const nivelIC =
+    classificarIC(ic, dimensoes);
+
+  const classificacaoPerfil =
+    definirPerfil(
+      nivelIP,
+      nivelIC,
+      ip,
+      ic
+    );
+
+  const destaques =
+    encontrarDestaques(dimensoes);
 
   return {
     dimensoes,
